@@ -1,5 +1,7 @@
 # info: https://django-rest-framework-simplejwt.readthedocs.io/en/latest/drf_yasg_integration.html
-from rest_framework import serializers
+from django.contrib.auth.models import User
+from django.contrib.auth.password_validation import validate_password
+from rest_framework import serializers, validators
 
 
 class TokenObtainPairSuccessResponseSerializer(serializers.Serializer):
@@ -44,3 +46,33 @@ class TokenRefreshFailedResponseSerializer(serializers.Serializer):
 
     def update(self, instance, validated_data):
         raise NotImplementedError()
+
+
+class RegisterSerializer(serializers.Serializer):
+    email = serializers.EmailField(
+        required=True, validators=[validators.UniqueValidator(User.objects.all())]
+    )
+    username = serializers.CharField(
+        required=True, validators=[validators.UniqueValidator(User.objects.all())]
+    )
+    password = serializers.CharField(
+        write_only=True, required=True, validators=[validate_password]
+    )
+
+    class Meta:
+        model = User
+        fields = (
+            "username",
+            "email",
+        )
+
+    def create(self, validated_data):
+        user = User.objects.create(
+            username=validated_data["username"],
+            email=validated_data["email"],
+        )
+
+        user.set_password(validated_data["password"])
+        user.save()
+
+        return user
