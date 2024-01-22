@@ -2,10 +2,13 @@
 info about using serializers for rest_framework_simplejwt.views:
 https://django-rest-framework-simplejwt.readthedocs.io/en/latest/drf_yasg_integration.html
 """
+from datetime import datetime
+
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers, validators
 
+from .models import Profile
 from .utils import get_tokens_for_user
 
 
@@ -83,6 +86,8 @@ class RegisterSerializer(serializers.Serializer):
         user.save()
 
         tokens = get_tokens_for_user(user)
+
+        Profile.objects.create(user=user)
 
         return {
             "email": user.email,
