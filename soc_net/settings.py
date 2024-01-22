@@ -65,6 +65,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+MIDDLEWARE += ["soc_net.users.middleware.LastRequestMiddleware"]
+
 ROOT_URLCONF = "soc_net.urls"
 
 TEMPLATES = [
