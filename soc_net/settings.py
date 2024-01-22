@@ -53,6 +53,8 @@ INSTALLED_APPS += [
     "drf_yasg",
 ]
 
+INSTALLED_APPS += ["soc_net.users"]
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
