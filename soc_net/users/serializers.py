@@ -1,7 +1,12 @@
-# info: https://django-rest-framework-simplejwt.readthedocs.io/en/latest/drf_yasg_integration.html
+"""
+info about using serializers for rest_framework_simplejwt.views:
+https://django-rest-framework-simplejwt.readthedocs.io/en/latest/drf_yasg_integration.html
+"""
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers, validators
+
+from .utils import get_tokens_for_user
 
 
 class TokenObtainPairSuccessResponseSerializer(serializers.Serializer):
@@ -58,6 +63,8 @@ class RegisterSerializer(serializers.Serializer):
     password = serializers.CharField(
         write_only=True, required=True, validators=[validate_password]
     )
+    access = serializers.CharField(read_only=True)
+    refresh = serializers.CharField(read_only=True)
 
     class Meta:
         model = User
@@ -75,4 +82,11 @@ class RegisterSerializer(serializers.Serializer):
         user.set_password(validated_data["password"])
         user.save()
 
-        return user
+        tokens = get_tokens_for_user(user)
+
+        return {
+            "email": user.email,
+            "username": user.username,
+            "access": tokens["access"],
+            "refresh": tokens["refresh"],
+        }

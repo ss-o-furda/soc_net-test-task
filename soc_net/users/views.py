@@ -1,4 +1,7 @@
-# info: https://django-rest-framework-simplejwt.readthedocs.io/en/latest/drf_yasg_integration.html
+"""
+info about using rest_framework_simplejwt.views:
+https://django-rest-framework-simplejwt.readthedocs.io/en/latest/drf_yasg_integration.html
+"""
 from django.contrib.auth.models import User
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import generics, status
