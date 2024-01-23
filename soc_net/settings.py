@@ -50,7 +50,7 @@ INSTALLED_APPS = [
 INSTALLED_APPS += [
     "rest_framework",
     "rest_framework_simplejwt",
-    "drf_yasg",
+    "drf_spectacular",
 ]
 
 INSTALLED_APPS += ["soc_net.users"]
@@ -153,4 +153,12 @@ REST_FRAMEWORK = {
     ),
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 10,
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Social Network test task",
+    "DESCRIPTION": "Test task: python developer",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
 }

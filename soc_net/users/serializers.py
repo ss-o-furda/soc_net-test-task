@@ -56,7 +56,8 @@ class TokenRefreshFailedResponseSerializer(serializers.Serializer):
         raise NotImplementedError()
 
 
-class RegisterSerializer(serializers.Serializer):
+class RegisterSerializer(serializers.ModelSerializer):
+    id = serializers.PrimaryKeyRelatedField(read_only=True)
     email = serializers.EmailField(
         required=True, validators=[validators.UniqueValidator(User.objects.all())]
     )
@@ -71,10 +72,7 @@ class RegisterSerializer(serializers.Serializer):
 
     class Meta:
         model = User
-        fields = (
-            "username",
-            "email",
-        )
+        fields = ("id", "username", "email", "access", "refresh", "password")
 
     def create(self, validated_data):
         user = User.objects.create(
@@ -90,6 +88,7 @@ class RegisterSerializer(serializers.Serializer):
         Profile.objects.create(user=user)
 
         return {
+            "id": user.pk,
             "email": user.email,
             "username": user.username,
             "access": tokens["access"],
