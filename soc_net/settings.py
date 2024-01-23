@@ -53,7 +53,7 @@ INSTALLED_APPS += [
     "drf_spectacular",
 ]
 
-INSTALLED_APPS += ["soc_net.users"]
+INSTALLED_APPS += ["soc_net.users", "soc_net.posts"]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
