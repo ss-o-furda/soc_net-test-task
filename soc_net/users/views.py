@@ -18,6 +18,9 @@ from .serializers import (
 
 
 class DecoratedTokenObtainPairView(TokenObtainPairView):
+    queryset = User.objects.all()
+    permission_classes = (AllowAny,)
+
     @extend_schema(
         responses={
             status.HTTP_200_OK: TokenObtainPairSuccessResponseSerializer,
@@ -29,6 +32,9 @@ class DecoratedTokenObtainPairView(TokenObtainPairView):
 
 
 class DecoratedTokenRefreshView(TokenRefreshView):
+    queryset = User.objects.all()
+    permission_classes = (AllowAny,)
+
     @extend_schema(
         responses={
             status.HTTP_200_OK: TokenRefreshSuccessResponseSerializer,

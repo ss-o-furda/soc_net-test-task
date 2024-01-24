@@ -1,3 +1,4 @@
+from drf_spectacular.utils import OpenApiExample, extend_schema_serializer
 from rest_framework import serializers
 
 from .models import Like, Post
@@ -19,6 +20,21 @@ class CreatePostSerializer(serializers.ModelSerializer):
         )
 
 
+@extend_schema_serializer(
+    exclude_fields=("user", "post"),
+    examples=[
+        OpenApiExample(
+            "Correct response",
+            value={
+                "id": 0,
+                "user": 0,
+                "post": 0,
+                "created_at": "2024-01-24T22:33:20.202Z",
+            },
+            response_only=True,
+        ),
+    ],
+)
 class LikePostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like

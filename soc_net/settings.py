@@ -162,4 +162,6 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "Test task: python developer",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
+    "SCHEMA_PATH_PREFIX": r"/api/v[1-9][0-9]*",
+    "SCHEMA_PATH_PREFIX_TRIM": True,
 }
