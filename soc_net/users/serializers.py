@@ -88,7 +88,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         Profile.objects.create(user=user)
 
         return {
-            "id": user.pk,
+            "id": user,
             "email": user.email,
             "username": user.username,
             "access": tokens["access"],

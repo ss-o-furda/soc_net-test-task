@@ -34,6 +34,7 @@ DEBUG = env("DEBUG")
 
 env_allowed_hosts = env("ALLOWED_HOSTS")
 ALLOWED_HOSTS = list(map(lambda x: x, env_allowed_hosts.split(",")))
+APPEND_SLASH = False
 
 
 # Application definition
