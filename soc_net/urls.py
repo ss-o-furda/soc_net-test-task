@@ -26,6 +26,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1/users/", include("soc_net.users.urls")),
     path("api/v1/posts/", include("soc_net.posts.urls")),
+    path("api/v1/analytics/", include("soc_net.analytics.urls")),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     # Optional UI:
     path(

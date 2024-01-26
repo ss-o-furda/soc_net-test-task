@@ -54,7 +54,7 @@ INSTALLED_APPS += [
     "drf_spectacular",
 ]
 
-INSTALLED_APPS += ["soc_net.users", "soc_net.posts"]
+INSTALLED_APPS += ["soc_net.users", "soc_net.posts", "soc_net.analytics"]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -146,14 +146,13 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
+    "UPDATE_LAST_LOGIN": True,
     "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
     "DEFAULT_PARSER_CLASSES": ("rest_framework.parsers.JSONParser",),
     "DEFAULT_PERMISSION_CLASSES": (
         "rest_framework.permissions.AllowAny",
         "rest_framework.permissions.IsAuthenticated",
     ),
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 10,
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
