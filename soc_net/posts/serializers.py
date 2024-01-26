@@ -1,5 +1,8 @@
-from drf_spectacular.utils import OpenApiExample, extend_schema_serializer
-from rest_framework import serializers
+from django.db import IntegrityError
+from django.shortcuts import get_object_or_404
+from rest_framework import exceptions, serializers
+
+from soc_net.users.serializers import RegisterSerializer
 
 from .models import Like, Post
 
@@ -7,35 +10,30 @@ from .models import Like, Post
 class CreatePostSerializer(serializers.ModelSerializer):
     author = serializers.HiddenField(default=serializers.CurrentUserDefault())
     likes_count = serializers.IntegerField(read_only=True)
+    author_data = RegisterSerializer(read_only=True, source="author")
 
     class Meta:
         model = Post
         fields = "__all__"
-
-    def create(self, validated_data):
-        return Post.objects.create(
-            author=validated_data["author"],
-            title=validated_data["title"],
-            content=validated_data["content"],
-        )
+        read_only_fields = ("author_data",)
 
 
-@extend_schema_serializer(
-    exclude_fields=("user", "post"),
-    examples=[
-        OpenApiExample(
-            "Correct response",
-            value={
-                "id": 0,
-                "user": 0,
-                "post": 0,
-                "created_at": "2024-01-24T22:33:20.202Z",
-            },
-            response_only=True,
-        ),
-    ],
-)
 class LikePostSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    user_data = RegisterSerializer(read_only=True, source="user")
+    post = CreatePostSerializer(read_only=True)
+
     class Meta:
         model = Like
         fields = "__all__"
+        read_only_fields = ("user_data",)
+
+    def create(self, validated_data):
+        post_id = self.context.get("post_id")
+        post = get_object_or_404(Post, pk=post_id)
+        validated_data["post"] = post
+        try:
+            instance = super().create(validated_data)
+        except IntegrityError:
+            raise exceptions.ValidationError({"error": "User already liked this post!"})
+        return instance
